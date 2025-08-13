@@ -48,11 +48,10 @@ const Dashboard = () => {
   }, []);
 
   const getAttendanceStats = () => {
-    const today = format(new Date(), "yyyy-MM-dd");
+const today = format(new Date(), "yyyy-MM-dd");
     const todayAttendance = attendance.filter(record => 
-      format(new Date(record.date), "yyyy-MM-dd") === today
+      format(new Date(record.date_c || record.date), "yyyy-MM-dd") === today
     );
-    
     const totalStudents = students.length;
     const presentToday = todayAttendance.filter(record => record.status === "present").length;
     const attendanceRate = totalStudents > 0 ? Math.round((presentToday / totalStudents) * 100) : 0;
@@ -62,20 +61,20 @@ const Dashboard = () => {
 
   const getGradeAverage = () => {
     if (grades.length === 0) return 0;
-    const total = grades.reduce((sum, grade) => sum + (grade.score / grade.maxScore) * 100, 0);
+const total = grades.reduce((sum, grade) => sum + ((grade.score_c || grade.score) / (grade.max_score_c || grade.maxScore)) * 100, 0);
     return Math.round(total / grades.length);
   };
 
   const getRecentActivity = () => {
-    const recentGrades = [...grades]
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
+const recentGrades = [...grades]
+      .sort((a, b) => new Date(b.date_c || b.date) - new Date(a.date_c || a.date))
       .slice(0, 5);
     
     return recentGrades.map(grade => {
-      const student = students.find(s => s.Id === grade.studentId);
+      const student = students.find(s => s.Id === (grade.student_id_c?.Id || grade.student_id_c || grade.studentId));
       return {
         ...grade,
-        studentName: student ? `${student.firstName} ${student.lastName}` : "Unknown Student"
+        studentName: student ? `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}` : "Unknown Student"
       };
     });
   };
@@ -140,19 +139,19 @@ const Dashboard = () => {
           <div className="space-y-4">
             {recentActivity.length > 0 ? (
               recentActivity.map((activity) => (
-                <div key={activity.Id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div key={activity.Id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
                       {activity.studentName}
                     </p>
-                    <p className="text-xs text-gray-600">{activity.assignmentName}</p>
+                    <p className="text-xs text-gray-600">{activity.assignment_name_c || activity.assignmentName}</p>
                   </div>
                   <div className="text-right">
-                    <Badge variant={activity.score / activity.maxScore >= 0.8 ? "success" : "warning"}>
-                      {Math.round((activity.score / activity.maxScore) * 100)}%
+                    <Badge variant={(activity.score_c || activity.score) / (activity.max_score_c || activity.maxScore) >= 0.8 ? "success" : "warning"}>
+                      {Math.round(((activity.score_c || activity.score) / (activity.max_score_c || activity.maxScore)) * 100)}%
                     </Badge>
                     <p className="text-xs text-gray-500 mt-1">
-                      {format(new Date(activity.date), "MMM d")}
+                      {format(new Date(activity.date_c || activity.date), "MMM d")}
                     </p>
                   </div>
                 </div>
@@ -193,13 +192,13 @@ const Dashboard = () => {
         {classes.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {classes.slice(0, 3).map((cls) => (
-              <div key={cls.Id} className="p-4 border border-gray-200 rounded-lg">
-                <h4 className="font-medium text-gray-900">{cls.name}</h4>
-                <p className="text-sm text-gray-600">{cls.subject}</p>
-                <p className="text-xs text-gray-500 mt-2">{cls.schedule}</p>
+<div key={cls.Id} className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-medium text-gray-900">{cls.Name || cls.name}</h4>
+                <p className="text-sm text-gray-600">{cls.subject_c || cls.subject}</p>
+                <p className="text-xs text-gray-500 mt-2">{cls.schedule_c || cls.schedule}</p>
                 <div className="mt-2">
                   <Badge variant="primary">
-                    {cls.studentIds?.length || 0} students
+                    {(cls.student_ids_c || cls.studentIds)?.split(',').filter(id => id.trim()).length || 0} students
                   </Badge>
                 </div>
               </div>

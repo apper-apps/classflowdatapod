@@ -6,12 +6,12 @@ import ApperIcon from "@/components/ApperIcon";
 import { format } from "date-fns";
 
 const GradesList = ({ grades, students, onEdit, onDelete, onAdd }) => {
-  const getStudentName = (studentId) => {
+const getStudentName = (studentId) => {
     const student = students.find(s => s.Id === studentId);
-    return student ? `${student.firstName} ${student.lastName}` : "Unknown Student";
+    return student ? `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}` : "Unknown Student";
   };
 
-  const getGradePercentage = (score, maxScore) => {
+const getGradePercentage = (score, maxScore) => {
     return Math.round((score / maxScore) * 100);
   };
 
@@ -63,33 +63,33 @@ const GradesList = ({ grades, students, onEdit, onDelete, onAdd }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {grades.map((grade) => {
-              const percentage = getGradePercentage(grade.score, grade.maxScore);
+{grades.map((grade) => {
+              const percentage = getGradePercentage(grade.score_c || grade.score, grade.max_score_c || grade.maxScore);
               return (
                 <tr key={grade.Id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {getStudentName(grade.studentId)}
+<div className="text-sm font-medium text-gray-900">
+                      {getStudentName(grade.student_id_c?.Id || grade.student_id_c || grade.studentId)}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{grade.assignmentName}</div>
+<td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">{grade.assignment_name_c || grade.assignmentName}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-gray-900">
-                        {grade.score}/{grade.maxScore}
+<span className="text-sm font-medium text-gray-900">
+                        {grade.score_c || grade.score}/{grade.max_score_c || grade.maxScore}
                       </span>
                       <Badge variant={getGradeVariant(percentage)}>
                         {percentage}%
                       </Badge>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Badge variant="secondary">{grade.type}</Badge>
+<td className="px-6 py-4 whitespace-nowrap">
+                    <Badge variant="secondary">{grade.type_c || grade.type}</Badge>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {format(new Date(grade.date), "MMM d, yyyy")}
+<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {format(new Date(grade.date_c || grade.date), "MMM d, yyyy")}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">

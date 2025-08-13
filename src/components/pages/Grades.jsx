@@ -43,13 +43,24 @@ const Grades = ({ onMenuToggle }) => {
     loadData();
   }, []);
 
-  const handleSaveGrade = async (gradeData) => {
+const handleSaveGrade = async (gradeData) => {
     try {
+      // Map UI field names to database field names
+      const mappedData = {
+        student_id_c: parseInt(gradeData.studentId),
+        class_id_c: parseInt(gradeData.classId),
+        assignment_name_c: gradeData.assignmentName,
+        score_c: parseFloat(gradeData.score),
+        max_score_c: parseFloat(gradeData.maxScore),
+        date_c: gradeData.date,
+        type_c: gradeData.type
+      };
+
       if (editingGrade) {
-        await gradeService.update(editingGrade.Id, gradeData);
+        await gradeService.update(editingGrade.Id, mappedData);
         toast.success("Grade updated successfully!");
       } else {
-        await gradeService.create(gradeData);
+        await gradeService.create(mappedData);
         toast.success("Grade added successfully!");
       }
       loadData();
@@ -82,17 +93,17 @@ const Grades = ({ onMenuToggle }) => {
     setIsModalOpen(true);
   };
 
-  const filteredGrades = grades.filter(grade => {
+const filteredGrades = grades.filter(grade => {
     if (!searchQuery) return true;
     
     const searchTerm = searchQuery.toLowerCase();
-    const student = students.find(s => s.Id === grade.studentId);
-    const studentName = student ? `${student.firstName} ${student.lastName}`.toLowerCase() : "";
+    const student = students.find(s => s.Id === (grade.student_id_c?.Id || grade.student_id_c || grade.studentId));
+    const studentName = student ? `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`.toLowerCase() : "";
     
     return (
       studentName.includes(searchTerm) ||
-      grade.assignmentName.toLowerCase().includes(searchTerm) ||
-      grade.type.toLowerCase().includes(searchTerm)
+      (grade.assignment_name_c || grade.assignmentName || '').toLowerCase().includes(searchTerm) ||
+      (grade.type_c || grade.type || '').toLowerCase().includes(searchTerm)
     );
   });
 

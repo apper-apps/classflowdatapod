@@ -6,10 +6,10 @@ import ApperIcon from "@/components/ApperIcon";
 import { format } from "date-fns";
 
 const AttendanceGrid = ({ attendanceData, students, selectedDate, onMarkAttendance, onDateChange }) => {
-  const getAttendanceForStudent = (studentId) => {
+const getAttendanceForStudent = (studentId) => {
     return attendanceData.find(
-      (record) => record.studentId === studentId && 
-      format(new Date(record.date), "yyyy-MM-dd") === format(new Date(selectedDate), "yyyy-MM-dd")
+      (record) => (record.student_id_c?.Id || record.student_id_c || record.studentId) == studentId && 
+      format(new Date(record.date_c || record.date), "yyyy-MM-dd") === format(new Date(selectedDate), "yyyy-MM-dd")
     );
   };
 
@@ -58,8 +58,8 @@ const AttendanceGrid = ({ attendanceData, students, selectedDate, onMarkAttendan
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {students.map((student) => {
-                const attendance = getAttendanceForStudent(student.Id);
-                const currentStatus = attendance?.status || null;
+const attendance = getAttendanceForStudent(student.Id);
+                const currentStatus = attendance?.status_c || attendance?.status || null;
 
                 return (
                   <tr key={student.Id} className="hover:bg-gray-50">
@@ -67,14 +67,14 @@ const AttendanceGrid = ({ attendanceData, students, selectedDate, onMarkAttendan
                       <div className="flex items-center">
                         <div className="h-8 w-8 flex-shrink-0">
                           <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                            <span className="text-xs font-medium text-white">
-                              {student.firstName.charAt(0)}{student.lastName.charAt(0)}
+<span className="text-xs font-medium text-white">
+                              {(student.first_name_c || student.firstName || '').charAt(0)}{(student.last_name_c || student.lastName || '').charAt(0)}
                             </span>
                           </div>
                         </div>
                         <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">
-                            {student.firstName} {student.lastName}
+<div className="text-sm font-medium text-gray-900">
+                            {student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
                           </div>
                         </div>
                       </div>

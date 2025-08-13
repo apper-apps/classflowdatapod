@@ -45,13 +45,25 @@ const Students = ({ onMenuToggle }) => {
     loadClasses();
   }, []);
 
-  const handleSaveStudent = async (studentData) => {
+const handleSaveStudent = async (studentData) => {
     try {
+      // Map UI field names to database field names
+      const mappedData = {
+        first_name_c: studentData.firstName,
+        last_name_c: studentData.lastName,
+        email_c: studentData.email,
+        phone_c: studentData.phone,
+        date_of_birth_c: studentData.dateOfBirth,
+        enrollment_date_c: studentData.enrollmentDate,
+        status_c: studentData.status,
+        class_ids_c: studentData.classIds?.join(',') || ''
+      };
+
       if (editingStudent) {
-        await studentService.update(editingStudent.Id, studentData);
+        await studentService.update(editingStudent.Id, mappedData);
         toast.success("Student updated successfully!");
       } else {
-        await studentService.create(studentData);
+        await studentService.create(mappedData);
         toast.success("Student added successfully!");
       }
       loadStudents();
@@ -79,9 +91,9 @@ const Students = ({ onMenuToggle }) => {
     }
   };
 
-  const handleViewStudent = (student) => {
+const handleViewStudent = (student) => {
     // In a real app, this could open a detailed view or navigate to student profile
-    toast.info(`Viewing ${student.firstName} ${student.lastName}`);
+    toast.info(`Viewing ${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`);
   };
 
   const handleAddNew = () => {
@@ -90,11 +102,11 @@ const Students = ({ onMenuToggle }) => {
   };
 
   const filteredStudents = students.filter(student => {
-    const searchTerm = searchQuery.toLowerCase();
+const searchTerm = searchQuery.toLowerCase();
     return (
-      student.firstName.toLowerCase().includes(searchTerm) ||
-      student.lastName.toLowerCase().includes(searchTerm) ||
-      student.email.toLowerCase().includes(searchTerm)
+      (student.first_name_c || student.firstName || '').toLowerCase().includes(searchTerm) ||
+      (student.last_name_c || student.lastName || '').toLowerCase().includes(searchTerm) ||
+      (student.email_c || student.email || '').toLowerCase().includes(searchTerm)
     );
   });
 

@@ -33,13 +33,21 @@ const Classes = ({ onMenuToggle }) => {
     loadClasses();
   }, []);
 
-  const handleSaveClass = async (classData) => {
+const handleSaveClass = async (classData) => {
     try {
+      // Map UI field names to database field names
+      const mappedData = {
+        Name: classData.name,
+        subject_c: classData.subject,
+        schedule_c: classData.schedule,
+        student_ids_c: classData.studentIds?.join(',') || ''
+      };
+
       if (editingClass) {
-        await classService.update(editingClass.Id, classData);
+        await classService.update(editingClass.Id, mappedData);
         toast.success("Class updated successfully!");
       } else {
-        await classService.create(classData);
+        await classService.create(mappedData);
         toast.success("Class added successfully!");
       }
       loadClasses();
@@ -76,11 +84,11 @@ const Classes = ({ onMenuToggle }) => {
     setIsModalOpen(true);
   };
 
-  const filteredClasses = classes.filter(cls => {
+const filteredClasses = classes.filter(cls => {
     const searchTerm = searchQuery.toLowerCase();
     return (
-      cls.name.toLowerCase().includes(searchTerm) ||
-      cls.subject.toLowerCase().includes(searchTerm)
+      (cls.Name || cls.name || '').toLowerCase().includes(searchTerm) ||
+      (cls.subject_c || cls.subject || '').toLowerCase().includes(searchTerm)
     );
   });
 

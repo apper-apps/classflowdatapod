@@ -23,14 +23,14 @@ const [errors, setErrors] = useState({});
   useEffect(() => {
 if (student) {
       setFormData({
-        firstName: student.firstName || "",
-        lastName: student.lastName || "",
-        email: student.email || "",
-        phone: student.phone || "",
-        dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth).toISOString().split("T")[0] : "",
-        enrollmentDate: student.enrollmentDate ? new Date(student.enrollmentDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
-        classIds: student.classIds || [],
-        status: student.status || "active",
+        firstName: student.first_name_c || student.firstName || "",
+        lastName: student.last_name_c || student.lastName || "",
+        email: student.email_c || student.email || "",
+        phone: student.phone_c || student.phone || "",
+        dateOfBirth: student.date_of_birth_c || student.dateOfBirth ? new Date(student.date_of_birth_c || student.dateOfBirth).toISOString().split("T")[0] : "",
+        enrollmentDate: student.enrollment_date_c || student.enrollmentDate ? new Date(student.enrollment_date_c || student.enrollmentDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
+        classIds: student.class_ids_c?.split(',').filter(id => id.trim()).map(id => parseInt(id)) || student.classIds || [],
+        status: student.status_c || student.status || "active",
         parentContacts: student.parentContacts || [],
         emergencyContacts: student.emergencyContacts || []
       });

@@ -17,15 +17,15 @@ const GradeModal = ({ isOpen, onClose, grade, onSave, students = [], classes = [
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (grade) {
+if (grade) {
       setFormData({
-        studentId: grade.studentId || "",
-        classId: grade.classId || "",
-        assignmentName: grade.assignmentName || "",
-        score: grade.score?.toString() || "",
-        maxScore: grade.maxScore?.toString() || "100",
-        date: grade.date ? new Date(grade.date).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
-        type: grade.type || "assignment"
+        studentId: (grade.student_id_c?.Id || grade.student_id_c || grade.studentId || "").toString(),
+        classId: (grade.class_id_c?.Id || grade.class_id_c || grade.classId || "").toString(),
+        assignmentName: grade.assignment_name_c || grade.assignmentName || "",
+        score: (grade.score_c || grade.score || "").toString(),
+        maxScore: (grade.max_score_c || grade.maxScore || 100).toString(),
+        date: grade.date_c || grade.date ? new Date(grade.date_c || grade.date).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
+        type: grade.type_c || grade.type || "assignment"
       });
     } else {
       setFormData({

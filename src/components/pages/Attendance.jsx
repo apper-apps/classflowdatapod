@@ -36,14 +36,14 @@ const Attendance = ({ onMenuToggle }) => {
     loadData();
   }, []);
 
-  const handleMarkAttendance = async (studentId, status, existingRecordId = null) => {
+const handleMarkAttendance = async (studentId, status, existingRecordId = null) => {
     try {
       const attendanceData = {
-        studentId: studentId,
-        classId: "1", // Default class for demo
-        date: selectedDate.toISOString(),
-        status: status,
-        notes: ""
+        student_id_c: studentId,
+        class_id_c: 1, // Default class for demo
+        date_c: selectedDate.toISOString().split('T')[0],
+        status_c: status,
+        notes_c: ""
       };
 
       if (existingRecordId) {

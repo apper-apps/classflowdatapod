@@ -14,12 +14,12 @@ const ClassModal = ({ isOpen, onClose, classData, onSave }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (classData) {
+if (classData) {
       setFormData({
-        name: classData.name || "",
-        subject: classData.subject || "",
-        schedule: classData.schedule || "",
-        studentIds: classData.studentIds || []
+        name: classData.Name || classData.name || "",
+        subject: classData.subject_c || classData.subject || "",
+        schedule: classData.schedule_c || classData.schedule || "",
+        studentIds: classData.student_ids_c?.split(',').filter(id => id.trim()) || classData.studentIds || []
       });
     } else {
       setFormData({

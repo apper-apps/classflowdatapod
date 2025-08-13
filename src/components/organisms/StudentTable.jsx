@@ -49,35 +49,35 @@ const StudentTable = ({ students, onEdit, onDelete, onView }) => {
                   <div className="flex items-center">
                     <div className="h-10 w-10 flex-shrink-0">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                        <span className="text-sm font-medium text-white">
-                          {student.firstName.charAt(0)}{student.lastName.charAt(0)}
+<span className="text-sm font-medium text-white">
+                          {(student.first_name_c || student.firstName || '').charAt(0)}{(student.last_name_c || student.lastName || '').charAt(0)}
                         </span>
                       </div>
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {student.firstName} {student.lastName}
+<div className="text-sm font-medium text-gray-900">
+                        {student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
                       </div>
                       <div className="text-sm text-gray-500">
-                        Born: {format(new Date(student.dateOfBirth), "MMM d, yyyy")}
+                        Born: {format(new Date(student.date_of_birth_c || student.dateOfBirth), "MMM d, yyyy")}
                       </div>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{student.email}</div>
-                  <div className="text-sm text-gray-500">{student.phone}</div>
+<td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{student.email_c || student.email}</div>
+                  <div className="text-sm text-gray-500">{student.phone_c || student.phone}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {format(new Date(student.enrollmentDate), "MMM d, yyyy")}
+<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {format(new Date(student.enrollment_date_c || student.enrollmentDate), "MMM d, yyyy")}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge variant={student.status === "active" ? "success" : "inactive"}>
-                    {student.status}
+<td className="px-6 py-4 whitespace-nowrap">
+                  <Badge variant={(student.status_c || student.status) === "active" ? "success" : "inactive"}>
+                    {student.status_c || student.status}
                   </Badge>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {student.classIds?.length || 0} classes
+<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {(student.class_ids_c || student.classIds)?.split ? (student.class_ids_c || student.classIds).split(',').filter(id => id.trim()).length : (student.classIds?.length || 0)} classes
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center justify-end space-x-2">
