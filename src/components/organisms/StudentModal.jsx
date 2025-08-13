@@ -52,13 +52,14 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes = [] }) => {
     }
   };
 
-  const handleClassChange = (e) => {
+const handleClassChange = (e) => {
     const { value, checked } = e.target;
+    const classId = parseInt(value, 10);
     setFormData(prev => ({
       ...prev,
       classIds: checked 
-        ? [...prev.classIds, value]
-        : prev.classIds.filter(id => id !== value)
+        ? [...prev.classIds, classId]
+        : prev.classIds.filter(id => id !== classId)
     }));
   };
 
@@ -182,12 +183,12 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes = [] }) => {
                     <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3">
                       {classes.map((cls) => (
                         <label key={cls.Id} className="flex items-center">
-                          <input
+<input
                             type="checkbox"
                             value={cls.Id}
-                            checked={formData.classIds.includes(cls.Id)}
+                            checked={formData.classIds.includes(parseInt(cls.Id, 10))}
                             onChange={handleClassChange}
-                            className="mr-2"
+                            className="mr-2 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer"
                           />
                           <span className="text-sm text-gray-700">{cls.name}</span>
                         </label>
