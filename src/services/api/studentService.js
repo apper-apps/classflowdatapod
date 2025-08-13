@@ -24,7 +24,9 @@ export const create = async (studentData) => {
   const newStudent = {
     Id: maxId + 1,
     ...studentData,
-    enrollmentDate: studentData.enrollmentDate || new Date().toISOString().split("T")[0]
+    enrollmentDate: studentData.enrollmentDate || new Date().toISOString().split("T")[0],
+    parentContacts: studentData.parentContacts || [],
+    emergencyContacts: studentData.emergencyContacts || []
   };
   students.push(newStudent);
   return { ...newStudent };
@@ -36,7 +38,13 @@ export const update = async (id, studentData) => {
   if (index === -1) {
     throw new Error("Student not found");
   }
-  students[index] = { ...students[index], ...studentData, Id: parseInt(id) };
+  students[index] = { 
+    ...students[index], 
+    ...studentData, 
+    Id: parseInt(id),
+    parentContacts: studentData.parentContacts || students[index].parentContacts || [],
+    emergencyContacts: studentData.emergencyContacts || students[index].emergencyContacts || []
+  };
   return { ...students[index] };
 };
 

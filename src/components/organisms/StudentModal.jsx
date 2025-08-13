@@ -4,7 +4,7 @@ import FormField from "@/components/molecules/FormField";
 import ApperIcon from "@/components/ApperIcon";
 
 const StudentModal = ({ isOpen, onClose, student, onSave, classes = [] }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -12,13 +12,16 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes = [] }) => {
     dateOfBirth: "",
     enrollmentDate: new Date().toISOString().split("T")[0],
     classIds: [],
-    status: "active"
+    status: "active",
+    parentContacts: [],
+    emergencyContacts: []
   });
-
-  const [errors, setErrors] = useState({});
+const [errors, setErrors] = useState({});
+  const [editingContact, setEditingContact] = useState(null);
+  const [contactType, setContactType] = useState(null);
 
   useEffect(() => {
-    if (student) {
+if (student) {
       setFormData({
         firstName: student.firstName || "",
         lastName: student.lastName || "",
@@ -27,18 +30,22 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes = [] }) => {
         dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth).toISOString().split("T")[0] : "",
         enrollmentDate: student.enrollmentDate ? new Date(student.enrollmentDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
         classIds: student.classIds || [],
-        status: student.status || "active"
+        status: student.status || "active",
+        parentContacts: student.parentContacts || [],
+        emergencyContacts: student.emergencyContacts || []
       });
     } else {
       setFormData({
         firstName: "",
-        lastName: "",
+lastName: "",
         email: "",
         phone: "",
         dateOfBirth: "",
         enrollmentDate: new Date().toISOString().split("T")[0],
         classIds: [],
-        status: "active"
+        status: "active",
+        parentContacts: [],
+        emergencyContacts: []
       });
     }
     setErrors({});
@@ -61,6 +68,48 @@ const handleClassChange = (e) => {
         ? [...prev.classIds, classId]
         : prev.classIds.filter(id => id !== classId)
     }));
+  };
+const addContact = (type) => {
+    setContactType(type);
+    setEditingContact({ name: "", phone: "", email: "" });
+  };
+
+  const editContact = (type, index) => {
+    setContactType(type);
+    setEditingContact({ 
+      ...formData[type][index], 
+      index 
+    });
+  };
+
+  const saveContact = (contactData) => {
+    const { index, ...contact } = contactData;
+    
+    if (index !== undefined) {
+      // Editing existing contact
+      setFormData(prev => ({
+        ...prev,
+        [contactType]: prev[contactType].map((c, i) => i === index ? contact : c)
+      }));
+    } else {
+      // Adding new contact
+      setFormData(prev => ({
+        ...prev,
+        [contactType]: [...prev[contactType], contact]
+      }));
+    }
+    
+    setEditingContact(null);
+    setContactType(null);
+  };
+
+  const deleteContact = (type, index) => {
+    if (window.confirm("Are you sure you want to delete this contact?")) {
+      setFormData(prev => ({
+        ...prev,
+        [type]: prev[type].filter((_, i) => i !== index)
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -193,6 +242,201 @@ const handleClassChange = (e) => {
                           <span className="text-sm text-gray-700">{cls.name}</span>
                         </label>
                       ))}
+                    </div>
+                  </div>
+                )}
+{/* Contact Information Section */}
+                <div className="border-t border-gray-200 pt-4 mt-6">
+                  <h4 className="text-md font-medium text-gray-900 mb-4">Contact Information</h4>
+                  
+                  {/* Parent/Guardian Contacts */}
+                  <div className="mb-6">
+                    <div className="flex justify-between items-center mb-3">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Parent/Guardian Contacts
+                      </label>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => addContact('parentContacts')}
+                      >
+                        <ApperIcon name="Plus" className="h-4 w-4 mr-1" />
+                        Add Parent
+                      </Button>
+                    </div>
+                    
+                    {formData.parentContacts.length > 0 ? (
+                      <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                        {formData.parentContacts.map((contact, index) => (
+                          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                            <div className="flex-1">
+                              <div className="text-sm font-medium text-gray-900">{contact.name}</div>
+                              <div className="text-xs text-gray-600">
+                                {contact.phone} • {contact.email}
+                              </div>
+                            </div>
+                            <div className="flex space-x-1">
+                              <button
+                                type="button"
+                                onClick={() => editContact('parentContacts', index)}
+                                className="text-gray-400 hover:text-blue-600"
+                              >
+                                <ApperIcon name="Edit2" className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteContact('parentContacts', index)}
+                                className="text-gray-400 hover:text-red-600"
+                              >
+                                <ApperIcon name="Trash2" className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-gray-500 italic border border-gray-200 rounded-lg p-3 text-center">
+                        No parent/guardian contacts added
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Emergency Contacts */}
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Emergency Contacts
+                      </label>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => addContact('emergencyContacts')}
+                      >
+                        <ApperIcon name="Plus" className="h-4 w-4 mr-1" />
+                        Add Emergency
+                      </Button>
+                    </div>
+                    
+                    {formData.emergencyContacts.length > 0 ? (
+                      <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                        {formData.emergencyContacts.map((contact, index) => (
+                          <div key={index} className="flex items-center justify-between bg-red-50 p-2 rounded">
+                            <div className="flex-1">
+                              <div className="text-sm font-medium text-gray-900">{contact.name}</div>
+                              <div className="text-xs text-gray-600">
+                                {contact.phone} • {contact.email}
+                              </div>
+                            </div>
+                            <div className="flex space-x-1">
+                              <button
+                                type="button"
+                                onClick={() => editContact('emergencyContacts', index)}
+                                className="text-gray-400 hover:text-blue-600"
+                              >
+                                <ApperIcon name="Edit2" className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteContact('emergencyContacts', index)}
+                                className="text-gray-400 hover:text-red-600"
+                              >
+                                <ApperIcon name="Trash2" className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-gray-500 italic border border-gray-200 rounded-lg p-3 text-center">
+                        No emergency contacts added
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Contact Form Modal */}
+                {editingContact && (
+                  <div className="fixed inset-0 z-60 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+                      <div className="fixed inset-0 bg-gray-500 bg-opacity-75" onClick={() => {
+                        setEditingContact(null);
+                        setContactType(null);
+                      }}></div>
+                      
+                      <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform sm:align-middle sm:max-w-md sm:w-full">
+                        <div className="bg-white px-4 pt-5 pb-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-lg font-medium text-gray-900">
+                              {editingContact.index !== undefined ? 'Edit' : 'Add'} {
+                                contactType === 'parentContacts' ? 'Parent/Guardian' : 'Emergency'
+                              } Contact
+                            </h4>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingContact(null);
+                                setContactType(null);
+                              }}
+                              className="text-gray-400 hover:text-gray-600"
+                            >
+                              <ApperIcon name="X" className="h-5 w-5" />
+                            </button>
+                          </div>
+                          
+                          <form onSubmit={(e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.target);
+                            const contactData = {
+                              name: formData.get('name'),
+                              phone: formData.get('phone'),
+                              email: formData.get('email'),
+                              index: editingContact.index
+                            };
+                            saveContact(contactData);
+                          }}>
+                            <div className="space-y-4">
+                              <FormField
+                                label="Name"
+                                name="name"
+                                defaultValue={editingContact.name}
+                                required
+                              />
+                              <FormField
+                                label="Phone Number"
+                                name="phone"
+                                type="tel"
+                                defaultValue={editingContact.phone}
+                                required
+                              />
+                              <FormField
+                                label="Email"
+                                name="email"
+                                type="email"
+                                defaultValue={editingContact.email}
+                                required
+                              />
+                            </div>
+                            
+                            <div className="bg-gray-50 px-4 py-3 mt-6 -mx-4 -mb-4 flex flex-row-reverse space-x-reverse space-x-3">
+                              <Button type="submit">
+                                {editingContact.index !== undefined ? 'Update' : 'Add'} Contact
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => {
+                                  setEditingContact(null);
+                                  setContactType(null);
+                                }}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
