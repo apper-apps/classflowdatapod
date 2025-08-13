@@ -36,9 +36,8 @@ export const update = async (id, attendanceRecord) => {
   if (index === -1) {
     throw new Error("Attendance record not found");
   }
-  attendance[index] = { ...attendance[index], ...attendanceRecord, Id: parseInt(id) };
+attendance[index] = { ...attendance[index], ...attendanceRecord, Id: parseInt(id) };
   return { ...attendance[index] };
-return { ...attendance[index] };
 };
 
 export const remove = async (id) => {
