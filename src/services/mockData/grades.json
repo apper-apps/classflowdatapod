@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "studentId": "1",
+    "classId": "1",
+    "assignmentName": "Math Quiz 1",
+    "score": 85,
+    "maxScore": 100,
+    "date": "2024-01-10",
+    "type": "quiz"
+  },
+  {
+    "Id": 2,
+    "studentId": "2",
+    "classId": "1",
+    "assignmentName": "Math Quiz 1",
+    "score": 92,
+    "maxScore": 100,
+    "date": "2024-01-10",
+    "type": "quiz"
+  },
+  {
+    "Id": 3,
+    "studentId": "3",
+    "classId": "2",
+    "assignmentName": "Essay Assignment",
+    "score": 88,
+    "maxScore": 100,
+    "date": "2024-01-12",
+    "type": "assignment"
+  },
+  {
+    "Id": 4,
+    "studentId": "4",
+    "classId": "1",
+    "assignmentName": "Math Quiz 1",
+    "score": 78,
+    "maxScore": 100,
+    "date": "2024-01-10",
+    "type": "quiz"
+  },
+  {
+    "Id": 5,
+    "studentId": "5",
+    "classId": "2",
+    "assignmentName": "Essay Assignment",
+    "score": 95,
+    "maxScore": 100,
+    "date": "2024-01-12",
+    "type": "assignment"
+  },
+  {
+    "Id": 6,
+    "studentId": "6",
+    "classId": "3",
+    "assignmentName": "Science Lab Report",
+    "score": 82,
+    "maxScore": 100,
+    "date": "2024-01-14",
+    "type": "assignment"
+  },
+  {
+    "Id": 7,
+    "studentId": "1",
+    "classId": "1",
+    "assignmentName": "Homework Set 1",
+    "score": 90,
+    "maxScore": 100,
+    "date": "2024-01-08",
+    "type": "assignment"
+  },
+  {
+    "Id": 8,
+    "studentId": "2",
+    "classId": "1",
+    "assignmentName": "Homework Set 1",
+    "score": 87,
+    "maxScore": 100,
+    "date": "2024-01-08",
+    "type": "assignment"
+  },
+  {
+    "Id": 9,
+    "studentId": "3",
+    "classId": "3",
+    "assignmentName": "Science Quiz 1",
+    "score": 76,
+    "maxScore": 100,
+    "date": "2024-01-13",
+    "type": "quiz"
+  },
+  {
+    "Id": 10,
+    "studentId": "5",
+    "classId": "3",
+    "assignmentName": "Science Quiz 1",
+    "score": 94,
+    "maxScore": 100,
+    "date": "2024-01-13",
+    "type": "quiz"
+  }
+]

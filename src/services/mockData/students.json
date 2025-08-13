@@ -1,0 +1,90 @@
+[
+  {
+    "Id": 1,
+    "firstName": "Emma",
+    "lastName": "Johnson",
+    "email": "emma.johnson@email.com",
+    "phone": "(555) 123-4567",
+    "dateOfBirth": "2005-03-15",
+    "enrollmentDate": "2023-09-01",
+    "classIds": ["1", "2"],
+    "status": "active"
+  },
+  {
+    "Id": 2,
+    "firstName": "Liam",
+    "lastName": "Williams",
+    "email": "liam.williams@email.com",
+    "phone": "(555) 234-5678",
+    "dateOfBirth": "2005-07-22",
+    "enrollmentDate": "2023-09-01",
+    "classIds": ["1", "3"],
+    "status": "active"
+  },
+  {
+    "Id": 3,
+    "firstName": "Sophia",
+    "lastName": "Brown",
+    "email": "sophia.brown@email.com",
+    "phone": "(555) 345-6789",
+    "dateOfBirth": "2005-01-10",
+    "enrollmentDate": "2023-09-15",
+    "classIds": ["2", "3"],
+    "status": "active"
+  },
+  {
+    "Id": 4,
+    "firstName": "Noah",
+    "lastName": "Davis",
+    "email": "noah.davis@email.com",
+    "phone": "(555) 456-7890",
+    "dateOfBirth": "2005-11-03",
+    "enrollmentDate": "2023-09-01",
+    "classIds": ["1"],
+    "status": "active"
+  },
+  {
+    "Id": 5,
+    "firstName": "Olivia",
+    "lastName": "Miller",
+    "email": "olivia.miller@email.com",
+    "phone": "(555) 567-8901",
+    "dateOfBirth": "2005-05-18",
+    "enrollmentDate": "2023-10-01",
+    "classIds": ["2", "3"],
+    "status": "active"
+  },
+  {
+    "Id": 6,
+    "firstName": "Ethan",
+    "lastName": "Wilson",
+    "email": "ethan.wilson@email.com",
+    "phone": "(555) 678-9012",
+    "dateOfBirth": "2005-09-14",
+    "enrollmentDate": "2023-09-01",
+    "classIds": ["1", "2", "3"],
+    "status": "active"
+  },
+  {
+    "Id": 7,
+    "firstName": "Isabella",
+    "lastName": "Moore",
+    "email": "isabella.moore@email.com",
+    "phone": "(555) 789-0123",
+    "dateOfBirth": "2005-12-07",
+    "enrollmentDate": "2023-09-15",
+    "classIds": ["2"],
+    "status": "active"
+  },
+  {
+    "Id": 8,
+    "firstName": "Mason",
+    "lastName": "Taylor",
+    "email": "mason.taylor@email.com",
+    "phone": "(555) 890-1234",
+    "dateOfBirth": "2005-04-25",
+    "enrollmentDate": "2023-09-01",
+    "classIds": ["1", "3"],
+    "status": "inactive"
+  }
+]
